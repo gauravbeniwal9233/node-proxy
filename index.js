@@ -3,20 +3,19 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const app = express();
 
-// Replace this with your actual token
-const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjExNTUiLCJuYmYiOjE3MjMwOTU1MjcsImV4cCI6MTcyMzcwMDMyNywiaWF0IjoxNzIzMDk1NTI3fQ.3qAWIRTxCafwDduU-aeynX_vnzDdDr4FsIE1-Ql-xW8';
-
 // Proxy configuration for API
 app.use('/api', createProxyMiddleware({
     target: 'http://sahosoftweb.com',
     changeOrigin: true,
     secure: false,
-    onProxyReq(proxyReq, req, res) {
-        // Add the authorization header to the proxied request
-        proxyReq.setHeader('Authorization', `Bearer ${token}`);
-        console.log(`Proxying request to: ${proxyReq.getHeader('host')}${proxyReq.path} with token: ${token}`);
+    onProxyReq: (proxyReq, req, res) => {
+        // Forward the Authorization header if present
+        if (req.headers['authorization']) {
+            proxyReq.setHeader('Authorization', req.headers['authorization']);
+        }
+        console.log(`Proxying request to: ${proxyReq.getHeader('host')}${proxyReq.path}`);
     },
-    onError(err, req, res) {
+    onError: (err, req, res) => {
         console.error('Error during proxying:', err);
         res.status(500).send('Proxy error occurred');
     },
@@ -30,11 +29,13 @@ app.use('/images', createProxyMiddleware({
     pathRewrite: {
         '^/images': '/images',
     },
-    onProxyReq(proxyReq, req, res) {
-        proxyReq.setHeader('Authorization', `Bearer ${token}`);
-        console.log(`Proxying request to: ${proxyReq.getHeader('host')}${proxyReq.path} with token: ${token}`);
+    onProxyReq: (proxyReq, req, res) => {
+        if (req.headers['authorization']) {
+            proxyReq.setHeader('Authorization', req.headers['authorization']);
+        }
+        console.log(`Proxying request to: ${proxyReq.getHeader('host')}${proxyReq.path}`);
     },
-    onError(err, req, res) {
+    onError: (err, req, res) => {
         console.error('Error during proxying:', err);
         res.status(500).send('Proxy error occurred');
     },
@@ -48,11 +49,13 @@ app.use('/users', createProxyMiddleware({
     pathRewrite: {
         '^/users': '/users',
     },
-    onProxyReq(proxyReq, req, res) {
-        proxyReq.setHeader('Authorization', `Bearer ${token}`);
-        console.log(`Proxying request to: ${proxyReq.getHeader('host')}${proxyReq.path} with token: ${token}`);
+    onProxyReq: (proxyReq, req, res) => {
+        if (req.headers['authorization']) {
+            proxyReq.setHeader('Authorization', req.headers['authorization']);
+        }
+        console.log(`Proxying request to: ${proxyReq.getHeader('host')}${proxyReq.path}`);
     },
-    onError(err, req, res) {
+    onError: (err, req, res) => {
         console.error('Error during proxying:', err);
         res.status(500).send('Proxy error occurred');
     },
