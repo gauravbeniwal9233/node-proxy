@@ -3,16 +3,18 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const app = express();
 
+// Replace this with your actual token
+const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjExNTUiLCJuYmYiOjE3MjMwOTU1MjcsImV4cCI6MTcyMzcwMDMyNywiaWF0IjoxNzIzMDk1NTI3fQ.3qAWIRTxCafwDduU-aeynX_vnzDdDr4FsIE1-Ql-xW8';
+
 // Proxy configuration for API
 app.use('/api', createProxyMiddleware({
     target: 'http://sahosoftweb.com',
     changeOrigin: true,
     secure: false,
-    // pathRewrite: {
-    //     // '^/api': '/api', // If your server doesn't need this, you can remove it.
-    // },
     onProxyReq(proxyReq, req, res) {
-        console.log(`Proxying request to: ${proxyReq.getHeader('host')}${proxyReq.path}`);
+        // Add the authorization header to the proxied request
+        proxyReq.setHeader('Authorization', `Bearer ${token}`);
+        console.log(`Proxying request to: ${proxyReq.getHeader('host')}${proxyReq.path} with token: ${token}`);
     },
     onError(err, req, res) {
         console.error('Error during proxying:', err);
@@ -29,7 +31,8 @@ app.use('/images', createProxyMiddleware({
         '^/images': '/images',
     },
     onProxyReq(proxyReq, req, res) {
-        console.log(`Proxying request to: ${proxyReq.getHeader('host')}${proxyReq.path}`);
+        proxyReq.setHeader('Authorization', `Bearer ${token}`);
+        console.log(`Proxying request to: ${proxyReq.getHeader('host')}${proxyReq.path} with token: ${token}`);
     },
     onError(err, req, res) {
         console.error('Error during proxying:', err);
@@ -46,7 +49,8 @@ app.use('/users', createProxyMiddleware({
         '^/users': '/users',
     },
     onProxyReq(proxyReq, req, res) {
-        console.log(`Proxying request to: ${proxyReq.getHeader('host')}${proxyReq.path}`);
+        proxyReq.setHeader('Authorization', `Bearer ${token}`);
+        console.log(`Proxying request to: ${proxyReq.getHeader('host')}${proxyReq.path} with token: ${token}`);
     },
     onError(err, req, res) {
         console.error('Error during proxying:', err);
