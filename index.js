@@ -9,7 +9,7 @@ app.use('/api', createProxyMiddleware({
     changeOrigin: true,
     secure: false,
     pathRewrite: {
-        '^/api': '/api', // If your server doesn't need this, you can remove it.
+        // '^/api': '/api', // If your server doesn't need this, you can remove it.
     },
     onProxyReq(proxyReq, req, res) {
         console.log(`Proxying request to: ${proxyReq.getHeader('host')}${proxyReq.path}`);
