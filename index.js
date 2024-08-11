@@ -9,7 +9,7 @@ app.use('/api', createProxyMiddleware({
     changeOrigin: true,
     secure: false,
     pathRewrite: {
-        '^/api': '', // If your server doesn't need this, you can remove it.
+        '^/api': '/api', // If your server doesn't need this, you can remove it.
     },
     onProxyReq(proxyReq, req, res) {
         console.log(`Proxying request to: ${proxyReq.getHeader('host')}${proxyReq.path}`);
@@ -26,7 +26,7 @@ app.use('/images', createProxyMiddleware({
     changeOrigin: true,
     secure: false,
     pathRewrite: {
-        '^/images': '',
+        '^/images': '/images',
     },
     onProxyReq(proxyReq, req, res) {
         console.log(`Proxying request to: ${proxyReq.getHeader('host')}${proxyReq.path}`);
@@ -43,7 +43,7 @@ app.use('/users', createProxyMiddleware({
     changeOrigin: true,
     secure: false,
     pathRewrite: {
-        '^/users': '',
+        '^/users': '/users',
     },
     onProxyReq(proxyReq, req, res) {
         console.log(`Proxying request to: ${proxyReq.getHeader('host')}${proxyReq.path}`);
