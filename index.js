@@ -5,11 +5,18 @@ const app = express();
 
 // Proxy configuration for API
 app.use('/api', createProxyMiddleware({
-    target: 'http://sahosoftweb.com', // Target server
+    target: 'http://sahosoftweb.com',
     changeOrigin: true,
-    secure: false, // This allows serving content over HTTPS even if the target is HTTP
+    secure: false,
     pathRewrite: {
-        '^/api': '/api', // Keeps the /api path when forwarding the request
+        '^/api': '', // If your server doesn't need this, you can remove it.
+    },
+    onProxyReq(proxyReq, req, res) {
+        console.log(`Proxying request to: ${proxyReq.getHeader('host')}${proxyReq.path}`);
+    },
+    onError(err, req, res) {
+        console.error('Error during proxying:', err);
+        res.status(500).send('Proxy error occurred');
     },
 }));
 
@@ -19,7 +26,14 @@ app.use('/images', createProxyMiddleware({
     changeOrigin: true,
     secure: false,
     pathRewrite: {
-        '^/images': '/images',
+        '^/images': '',
+    },
+    onProxyReq(proxyReq, req, res) {
+        console.log(`Proxying request to: ${proxyReq.getHeader('host')}${proxyReq.path}`);
+    },
+    onError(err, req, res) {
+        console.error('Error during proxying:', err);
+        res.status(500).send('Proxy error occurred');
     },
 }));
 
@@ -29,7 +43,14 @@ app.use('/users', createProxyMiddleware({
     changeOrigin: true,
     secure: false,
     pathRewrite: {
-        '^/users': '/users',
+        '^/users': '',
+    },
+    onProxyReq(proxyReq, req, res) {
+        console.log(`Proxying request to: ${proxyReq.getHeader('host')}${proxyReq.path}`);
+    },
+    onError(err, req, res) {
+        console.error('Error during proxying:', err);
+        res.status(500).send('Proxy error occurred');
     },
 }));
 
